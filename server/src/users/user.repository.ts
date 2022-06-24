@@ -15,4 +15,10 @@ export class UsersRepository {
 
     return user.save();
   }
+
+  async findOneByEmail(email: string) {
+    return this.user.findOne({
+      email,
+    });
+  }
 }
