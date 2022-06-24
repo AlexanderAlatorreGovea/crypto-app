@@ -1,7 +1,8 @@
 import { Button, TextField, Link as MuiLink } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router";
+
+import { useCreateUserMutation } from "../../apis/users.api";
 
 const SignupForm: React.FC = () => {
   // //   const dispatch = useAppDispatch();
@@ -11,16 +12,22 @@ const SignupForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [passwordErrored, setPasswordErrored] = useState(false);
 
-  // //   const [createUser] = useCreateUserMutation();
+  const [createUser] = useCreateUserMutation();
   // //   const [login] = useLoginMutation();
   // //   const navigate = useNavigate();
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (email) setEmailErrored(false);
     if (!email) setEmailErrored(true);
 
     if (password) setPasswordErrored(false);
     if (!password) setPasswordErrored(true);
+
+    try {
+      await createUser({ email, password });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // //   const handleSignup = async () => {

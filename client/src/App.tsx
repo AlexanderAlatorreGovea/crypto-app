@@ -1,6 +1,6 @@
-import { createTheme, ThemeProvider } from "@mui/material";
 import React from "react";
-import Login from "./components/Login/Login";
+import { createTheme, ThemeProvider } from "@mui/material";
+
 import { Routes } from "./routes/routes";
 
 import "./index.css";
