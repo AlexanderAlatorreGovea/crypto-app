@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { CreateUserRequest } from "../dto/create-user-request.dto";
+import { CreateUserRequest } from "../dto/login-request.dto";
 import { User } from "../models/User";
 
 export const usersApi = createApi({

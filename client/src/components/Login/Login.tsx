@@ -3,15 +3,25 @@ import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
+import { useLoginMutation } from "../../apis/auth.api";
+import { User } from "../../models/User";
+
+import { z } from "zod";
+
+const validationSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(5).max(20).trim(),
+});
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [emailErrored, setEmailErrored] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordErrored, setPasswordErrored] = useState(false);
-  // const [login] = useLoginMutation();
+
+  const [login] = useLoginMutation();
   // const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!email) setEmailErrored(true);
@@ -20,13 +30,17 @@ const Login = () => {
     if (!password) setPasswordErrored(true);
     if (password) setPasswordErrored(false);
 
-    // try {
-    //   const response = (await login({ email, password })) as { data: User };
-    //   dispatch(setAuthState({ user: response.data }));
-    //   navigate("/");
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    try {
+      const user = { email, password };
+      const validatedUser = validationSchema.parse(user);
+      //const response = (await login({ email, password })) as { data: User };
+      console.log(validatedUser)
+      await login(validatedUser);
+      //dispatch(setAuthState({ user: response.data }));
+      //navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const emailError = emailErrored && "Please enter a valid Email.";
