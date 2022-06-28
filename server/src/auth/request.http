@@ -1,0 +1,8 @@
+### login user
+POST http://localhost:6000/auth/login
+content-type: application/json
+
+{
+  "email": "govea@hotmail.com",
+  "password": "password3"
+}
