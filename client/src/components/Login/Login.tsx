@@ -7,6 +7,8 @@ import { useLoginMutation } from "../../apis/auth.api";
 import { User } from "../../models/User";
 
 import { z } from "zod";
+import { useAppDispatch } from "../../app/hooks";
+import { setAuthState } from "../../slice/auth.slice";
 
 const validationSchema = z.object({
   email: z.string().email(),
@@ -20,7 +22,7 @@ const Login = () => {
   const [passwordErrored, setPasswordErrored] = useState(false);
 
   const [login] = useLoginMutation();
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -33,11 +35,10 @@ const Login = () => {
     try {
       const user = { email, password };
       const validatedUser = validationSchema.parse(user);
-      //const response = (await login({ email, password })) as { data: User };
-      console.log(validatedUser)
-      await login(validatedUser);
-      //dispatch(setAuthState({ user: response.data }));
-      //navigate("/");
+      const response = (await login(validatedUser)) as { data: User };
+
+      dispatch(setAuthState({ user: response.data }));
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
